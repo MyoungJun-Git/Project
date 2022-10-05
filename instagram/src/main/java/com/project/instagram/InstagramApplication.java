@@ -7,5 +7,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class InstagramApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(InstagramApplication.class, args);
+
+		synchronized () {
+
+		}
 	}
 }
