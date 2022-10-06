@@ -1,7 +1,8 @@
 import logo200Image from 'assets/img/logo/logo_200.png';
 import PropTypes from 'prop-types';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import { Button, Form, FormGroup, Input, Label } from 'reactstrap';
+import axios from 'axios';
 
 class AuthForm extends React.Component {
   get isLogin() {
@@ -19,7 +20,36 @@ class AuthForm extends React.Component {
   };
 
   handleSubmit = event => {
+    /**
+     * ! event.preventDefault(); 사용이유
+     *   - a태그 처럼 클릭이벤트 외에 별도의 브라우저 행동을 막기 위해 사용된다.
+     */
     event.preventDefault();
+
+    axios.get('/instagramAPI/main')
+      .then((res) => {
+        let { data } = res;
+        console.log('DATA : ' + data);
+
+        //let { userId, id, title } = data;
+        //console.log('UserId : ' + userId);
+        //console.log('Id : ' +id);
+        //console.log('Title : ' +title);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+    /* const [message, setMessage] = useState('');
+
+    useEffect(() => {
+        axios.get('/instagramAPI/main')
+        .then(response => setMessage(response.data))
+        .catch(error => console.log(error))
+    }, []);
+    
+    console.log('backend Message : ' + {message}); */
+    
   };
 
   renderButtonText() {
