@@ -16,11 +16,18 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
+	//lombok
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
 	//MySQL
 	implementation 'mysql:mysql-connector-java'
 
 	//JPA
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+
+	//Json
+	implementation 'net.sf.json-lib:json-lib:2.4:jdk15'
 }
 
 tasks.named('test') {
