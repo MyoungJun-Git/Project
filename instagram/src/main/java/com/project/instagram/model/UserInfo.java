@@ -1,12 +1,13 @@
 package com.project.instagram.model;
 
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import com.sun.istack.NotNull;
+import lombok.*;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 
 
 //@Getter @Setter          //Getter Setter
@@ -21,8 +22,18 @@ public class UserInfo {
     //@GeneratedValue(strategy = GenerationType.IDENTITY) 자동증분 [시퀀스]
 
     @Id //PK(Primary Key)
-    private String userId;       //사용자 아이디
-    private String userPw;       //사용자 패스워드
-    private String userNm;       //사용자 성명
-    private String userNickname; //사용자 이름
+    private String userId;               //사용자 아이디
+    private String userName;             //사용자 성명
+    private String userNickname;         //사용자 닉네임
+    private String userPassword;         //사용자 패스워드
+    private String userConfirmPassword;  //사용자 패스워드 확인
+
+    @Builder
+    public UserInfo(String i_userId, String i_userName, String i_userNickname, String i_userPassword, String i_userConfirmPassword) {
+        this.userId = i_userId;
+        this.userName = i_userName;
+        this.userNickname = i_userNickname;
+        this.userPassword = i_userPassword;
+        this.userConfirmPassword = i_userConfirmPassword;
+    }
 }

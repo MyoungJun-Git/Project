@@ -1,41 +1,48 @@
 package com.project.instagram.controller;
 
+import com.project.instagram.dto.RequestUserDto;
+import com.project.instagram.dto.ResponseUserDto;
 import com.project.instagram.model.UserInfo;
 import com.project.instagram.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
+@RequestMapping("/instagramAPI")
 @RequiredArgsConstructor
+@Slf4j
 public class UserRestController {
+
     private final UserService userService;
 
-    @GetMapping("/instagramAPI/main")
+    @GetMapping(value = "/main")
     public String test() {
         return "spring boot";
     }
 
-    @GetMapping("/instagramAPI/jpaTest")
-    public Model japTest(Model model) {
-        System.out.println("UserRestController /instagramAPI/jpaTest ! ");
+    @PostMapping(value = "/getUserInfoList")
+    public List<UserInfo> getUserInfo () {
+        //log 순서 : trace >> debug >> info >> warn >> error
 
-        /*
-        //첫번째 방법 : 개별 사용자정보 호출
-        UserInfo userInfo = userService.showUserInfo("newwonmj");
-        System.out.println("getUserId : " + userInfo.getUserId());
-        System.out.println("getUserPw : " + userInfo.getUserPw());
-        System.out.println("getUserNm : " + userInfo.getUserNm());
-        System.out.println("getUserNickname : " + userInfo.getUserNickname());
-        */
-
-        //두번째 방법 : 전체 사용자정보 호출
-        List<UserInfo> userInfoList = userService.showUserInfoList();
-
-        //model.addAttribute("userInfoList", userInfoList);
-        return model;
+        log.info("/getUserInfo"); // default
+        return userService.selectAllUserInfoList();
     }
+
+    @PostMapping(value = "/getUserInfo")
+    public UserInfo getUserInfo (@RequestBody @Valid RequestUserDto.login requestUserDtoLogin) {
+        log.info("@ param : {}", requestUserDtoLogin); // default
+        return userService.selectUserInfo(requestUserDtoLogin);
+    }
+
+    @PostMapping(value = "/setUserInfo")
+    public String setUserInfo (@RequestBody @Valid RequestUserDto.signup requestUserDtoSignup) {
+        log.info("@ param : {}", requestUserDtoSignup); // default
+        return userService.addUserInfo(requestUserDtoSignup);
+    }
+
 }

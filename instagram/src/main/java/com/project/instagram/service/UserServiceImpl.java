@@ -1,10 +1,13 @@
 package com.project.instagram.service;
 
+import com.project.instagram.dto.RequestUserDto;
+import com.project.instagram.dto.ResponseUserDto;
 import com.project.instagram.model.UserInfo;
 import com.project.instagram.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Service
@@ -14,32 +17,23 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     @Override
-    public String addUserInfo(UserInfo userInfo) {
-        UserInfo addUserInfo = userRepository.save(userInfo);
+    @Transactional
+    //회원정보저장
+    public String addUserInfo(RequestUserDto.signup requestUserDto) {
+        UserInfo addUserInfo = userRepository.save(requestUserDto.toEntity());
         return addUserInfo.getUserId();
     }
 
     @Override
-    public UserInfo showUserInfo(String userId) {
-        UserInfo userInfo = userRepository.findUserInfo(userId);
-        return userInfo;
+    @Transactional
+    public List<UserInfo> selectAllUserInfoList() {
+        return userRepository.findAll();
     }
 
     @Override
-    public void deleteUserInfo(String userId) {
-        userRepository.deleteByUserId(userId);
-    }
-    @Override
-    public List<UserInfo> showUserInfoList() {
-        List<UserInfo> userInfoList = userRepository.findAllUserInfo();
-        System.out.println(" UserServiceImpl showUserInfoList! " );
-        for (int i = 0; i < userInfoList.size(); i++) {
-            System.out.println("UserId : " + userInfoList.get(i).getUserId());
-            System.out.println("UserPassword : " + userInfoList.get(i).getUserPw());
-            System.out.println("UserName : " + userInfoList.get(i).getUserNm());
-            System.out.println("UserNickname : " + userInfoList.get(i).getUserNickname());
-        }
-
-        return userInfoList;
+    @Transactional
+    public UserInfo selectUserInfo(RequestUserDto.login requestUserDtoRead) {
+        //UserInfo userInfo = requestUserDtoRead.toEntity().getUserId();
+        return userRepository.findByUserIdAndUserPassword(requestUserDtoRead.toEntity().getUserId(), requestUserDtoRead.toEntity().getUserPassword());
     }
 }
